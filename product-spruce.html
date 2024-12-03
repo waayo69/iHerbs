@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Product 1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+    
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1 class="logo" onclick="window.location.href='index.html'" aria-label="Go to home page">iHerbs</h1>
+            <nav class="nav-right">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Product Details Section -->
+        <section class="product-details">
+            <div class="product">
+                <img src="spruce.webp" alt="Product 1 Image" class="product-image">
+            </div>
+            <div class="product-info">
+                <h1>Spruce Tip Tea</h1>
+                <p class="price">$14.00</p>
+                <p class="description">Premium loose leaf herbal tea hand harvested from the Northwest Territories
+                    Spruce tips are high in Vitamin C
+                   for harvesting information, recipe ideas, brewing techniques and health benefits.
+                </p>
+                <!-- Quantity Selector and Add to Cart Button -->
+                <form action="#" method="post" class="add-to-cart-form">
+                    <div class="quantity-container">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1" class="quantity-input">
+                    </div>
+                    <button type="button" class="shopbtn" onclick="addToCart()">Add to Cart</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Related Products Section (optional) -->
+        <section class="related-products">
+            <h2>Related Products</h2>
+            <div class="product-list">
+                <!-- Product 2 -->
+                
+                <div class="product">
+                    <a href="product-Tamarack.html">
+                        <img src="tamarak.webp" alt="Product 2 Image" class="product-image">
+                    </a>
+                    <h3><a href="product-Tamarack.html">Tamarack Tea</a></h3>
+                    <p>$8.00</p>
+                    </div>
+                <!-- Product 3 -->
+                
+                <div class="product">
+                    <a href="product-ivan.html">
+                        <img src="ivan.webp" alt="Product 3 Image" class="product-image">
+                    </a>
+                    <h3><a href="product-details.html">Ivan Tea</a></h3>
+                    <p>$6.00</p>
+            </div>
+            </div>
+        </section>
+    </main>
+    <script src="data.js"></script>
+    <script>
+    function addToCart() {
+        const product = {
+            id: 10,
+            name: "Spruce Tip Tea",
+            price: 14.00,
+            quantity: parseInt(document.getElementById("quantity").value),
+            image: "spruce.webp"
+        };
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Check if product already exists in the cart
+        const existingProduct = cart.find(item => item.id === product.id);
+        if (existingProduct) {
+            existingProduct.quantity += product.quantity; // Update quantity
+        } else {
+            cart.push(product); // Add new product
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert("Item added to cart successfully!");
+    }
+</script>
+    
+
+</body>
+</html>

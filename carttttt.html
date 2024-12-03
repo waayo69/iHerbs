@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Shopping Cart</title>
+    <style>
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .cart-item-details {
+            flex: 1;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quantity-controls button {
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1 class="logo" onclick="window.location.href='index.html'">iHerbs</h1>
+            <nav class="nav-right">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+            </nav>
+        </div>
+    </header>
+    <div class="p">
+        <h1>Your Shopping Cart</h1>
+        <div class="cart-container" id="cartContainer">
+            <!-- Dynamic Cart Items Will Be Injected Here -->
+        </div>
+    </div>
+    <button class="shopbtn" id="clearCartBtn">Clear Cart</button>
+
+    <script>
+        // Fetch cart items from localStorage
+        const cartContainer = document.getElementById("cartContainer");
+        const clearCartBtn = document.getElementById("clearCartBtn");
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function renderCart() {
+            cartContainer.innerHTML = ""; // Clear the container
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+                clearCartBtn.style.display = "none"; // Hide the "Clear Cart" button if cart is empty
+                return;
+            }
+
+            clearCartBtn.style.display = "block"; // Show the "Clear Cart" button
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement("div");
+                cartItem.classList.add("cart-item");
+
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <p>Price: ${item.price}$</p>
+                        <div class="quantity-controls">
+                            <button class="shopbtn" onclick="decreaseQuantity(${index})">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="shopbtn" onclick="increaseQuantity(${index})">+</button>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="shopbtn" onclick="removeFromCart(${index})">Remove</button>
+                        </div>
+                    </div>
+                `;
+
+                cartContainer.appendChild(cartItem);
+            });
+        }
+
+        function increaseQuantity(index) {
+            cart[index].quantity += 1; // Increase quantity
+            localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+            renderCart(); // Re-render the cart
+        }
+
+        function decreaseQuantity(index) {
+            if (cart[index].quantity > 1) {
+                cart[index].quantity -= 1; // Decrease quantity
+            } else {
+                removeFromCart(index); // Remove item if quantity is 1
+                return;
+            }
+            localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+            renderCart(); // Re-render the cart
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1); // Remove the item from the array
+            localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+            renderCart(); // Re-render the cart
+        }
+
+        function clearCart() {
+    // Clear all items from the cart array
+    cart.length = 0; // This mutates the array directly, preserving its reference
+    localStorage.setItem("cart", JSON.stringify(cart)); // Clear from localStorage
+    renderCart(); // Re-render the cart
+}
+
+        clearCartBtn.addEventListener("click", clearCart);
+
+        // Initial render
+        renderCart();
+    </script>
+</body>
+</html>

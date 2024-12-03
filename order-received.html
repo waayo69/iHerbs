@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Order Received</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .order-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .order-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .order-section {
+            margin-bottom: 20px;
+        }
+        .order-section h3 {
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="order-container">
+        <div class="order-header">
+            <h1>Order Received</h1>
+            <p>Thank you for your purchase!</p>
+        </div>
+
+        <div class="order-section" id="orderItems">
+            <h3>Items Purchased</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Order Items will be rendered here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="order-section">
+            <h3>Shipping Information</h3>
+            <p id="shippingInfo"></p>
+        </div>
+
+        <div class="order-section">
+            <h3>Payment Details</h3>
+            <p id="paymentDetails"></p>
+        </div>
+    </div>
+
+    <script>
+        // Get order details from localStorage
+        const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+
+        // Render purchased items
+        const itemsContainer = document.querySelector("#orderItems tbody");
+        orderDetails.cart.forEach((item) => {
+            const row = `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                </tr>
+            `;
+            itemsContainer.innerHTML += row;
+        });
+
+        // Render shipping info
+        const shippingInfo = `
+            <strong>Name:</strong> ${orderDetails.shippingInfo.name}<br>
+            <strong>Email:</strong> ${orderDetails.shippingInfo.email}<br>
+            <strong>Address:</strong> ${orderDetails.shippingInfo.address}, ${orderDetails.shippingInfo.city}, ${orderDetails.shippingInfo.country}
+        `;
+        document.getElementById("shippingInfo").innerHTML = shippingInfo;
+
+        // Render payment details
+        const paymentInfo = `<strong>Card Number:</strong> ${orderDetails.paymentDetails.card}`;
+        document.getElementById("paymentDetails").innerHTML = paymentInfo;
+
+        // Clear cart from localStorage
+        localStorage.removeItem("cart");
+    </script>
+</body>
+</html>

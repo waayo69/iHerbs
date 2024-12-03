@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Product 1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1 class="logo" onclick="window.location.href='index.html'" aria-label="Go to home page">iHerbs</h1>
+            <nav class="nav-right">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Product Details Section -->
+        <section class="product-details">
+            <div class="product">
+                <img src="articrose.webp" alt="Product 1 Image" class="product-image">
+            </div>
+            <div class="product-info">
+                <h1>Artic Rose</h1>
+                <p class="price">$14.00</p>
+                <p class="description">A fragrant infusion of wild arctic rose petals and leaf, wild fireweed leaf, and spring spruce tips.  A delicious, full bodied tea, that is good for your health.
+
+                    Notes of floral honey with a hint of lemony spruce
+                    Loose Tea – Available in 2 sizes: 6 g (6-7 servings) or 20 g (20 single servings)
+                    Fireweed is high Vitamin C and A.  It is a anti-inflammatory, anti-irritant, antimicrobial, antiseptic.
+                    Ingredients
+                    Wild Arctic Rose leaf and petal (Rosa acicularis), wild spring spruce tips (Picea mariana/glauca),  wild fireweed leaf (Chamerion angustifolium).
+                    </p>
+                <!-- Quantity Selector and Add to Cart Button -->
+                <form action="#" method="post" class="add-to-cart-form">
+                    <div class="quantity-container">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1" class="quantity-input">
+                    </div>
+                    <button type="button" class="btn btn-primary shopbtn" onclick="addToCart()">Add to Cart</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Related Products Section (optional) -->
+        <section class="related-products">
+            <h2>Related Products</h2>
+            
+                <!-- Product 2 -->
+                <div class ="product-list">
+                <div class="product">
+                    <a href="product-Tamarack.html">
+                        <img src="tamarak.webp" alt="Product 2 Image" class="product-image">
+                    </a>
+                    <h3><a href="product-Tamarack.html">Tamarack Tea</a></h3>
+                    <p>$8.00</p>
+                    </div>
+                    
+                <!-- Product 3 -->
+                
+                <div class="product">
+                    <a href="product-articrose.html">
+                        <img src="articrose.webp" alt="Product 3 Image" class="product-image">
+                    </a>
+                    <h3><a href="product-articrose.html">Artic Rose Wild Herbal Tea</a></h3>
+                    <p>$16.00</p>
+                    
+                </div>
+                </div>
+            
+            
+        </section>
+    </main>
+    <script>
+        function addToCart() {
+            const product = {
+                id: 3,
+                name: "Artic Rose",
+                price: 14.00,
+                quantity: parseInt(document.getElementById("quantity").value),
+                image: "articrose.webp"
+            };
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Check if product already exists in the cart
+            const existingProduct = cart.find(item => item.id === product.id);
+            if (existingProduct) {
+                existingProduct.quantity += product.quantity; // Update quantity
+            } else {
+                cart.push(product); // Add new product
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Item added to cart successfully!");
+        }
+    </script>
+
+</body>
+</html>
